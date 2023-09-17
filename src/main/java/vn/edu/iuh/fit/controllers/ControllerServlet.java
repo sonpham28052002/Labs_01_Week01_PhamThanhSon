@@ -1,7 +1,6 @@
 package vn.edu.iuh.fit.controllers;
 
 
-import jakarta.persistence.EntityTransaction;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,7 +8,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import vn.edu.iuh.fit.conectionDB.ConecttionDB;
 import vn.edu.iuh.fit.entities.Account;
 import vn.edu.iuh.fit.entities.GantAccess;
 import vn.edu.iuh.fit.entities.Log;
@@ -55,25 +53,28 @@ public class ControllerServlet extends HttpServlet {
         } else if (addTV != null) {
            handleAddAccount(req,resp,addTV);
         } else if (edit != null) {
-            String NOTI ="";
-            String id = edit.split(",")[0];
-            String name = edit.split(",")[1];
-            String email = edit.split(",")[2];
-            String sdt = edit.split(",")[3];
-            String pass = edit.split(",")[4];
-            boolean isStatus = Boolean.parseBoolean(edit.split(",")[5]);
-            Account account = new Account(id,name,pass,email,sdt,isStatus);
-            System.out.println(account);
-            if (accountReponsitory.updateAccount(account)){
-                NOTI = "Cập Nhật Thông Tin Thành Công";
-            }else {
-                NOTI ="Cập Nhật Thông Tin Thất Bại!";
-            }
-            req.setAttribute("thongbao", NOTI);
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin2.jsp");
-            dispatcher.forward(req, resp);
+            handleDelete(req,resp,edit);
 
         }
+    }
+    public void handleEditInfo(HttpServletRequest req, HttpServletResponse resp,String edit) throws ServletException, IOException {
+        String NOTI ="";
+        String id = edit.split(",")[0];
+        String name = edit.split(",")[1];
+        String email = edit.split(",")[2];
+        String sdt = edit.split(",")[3];
+        String pass = edit.split(",")[4];
+        boolean isStatus = Boolean.parseBoolean(edit.split(",")[5]);
+        Account account = new Account(id,name,pass,email,sdt,isStatus);
+        System.out.println(account);
+        if (accountReponsitory.updateAccount(account)){
+            NOTI = "Cập Nhật Thông Tin Thành Công";
+        }else {
+            NOTI ="Cập Nhật Thông Tin Thất Bại!";
+        }
+        req.setAttribute("thongbao", NOTI);
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin2.jsp");
+        dispatcher.forward(req, resp);
     }
     public String createAccountID(){
         String id =accountReponsitory.getAccountFinal();
