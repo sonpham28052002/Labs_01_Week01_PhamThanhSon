@@ -9,7 +9,7 @@ public class Role {
     @Id
     @Column(name = "role_id")
     private String roleId;
-    @Column(name = "role_name")
+    @Column(name = "role_name",columnDefinition = "nvarchar(255)")
     private  String roleName;
     private  String description;
     private boolean status;

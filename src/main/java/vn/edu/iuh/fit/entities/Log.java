@@ -5,12 +5,14 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
+
 @Entity(name = "log")
 public class Log {
     @Id
-    @Column(name = "id" )
-    @GeneratedValue
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long logID;
+
     @Id
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -19,7 +21,7 @@ public class Log {
     private Date logInTime;
     @Column(name = "logout_time")
     private Date logOutTime;
-
+    @Column(columnDefinition = "nvarchar(255)")
     private String notes;
 
     public Log() {

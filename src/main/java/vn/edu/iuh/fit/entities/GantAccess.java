@@ -19,6 +19,7 @@ public class GantAccess {
     private  Account account;
     @Column(name = "is_gant")
     private boolean isGant;
+    @Column(columnDefinition = "nvarchar(255)")
     private String note;
 
     public GantAccess() {

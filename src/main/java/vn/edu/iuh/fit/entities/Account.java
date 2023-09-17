@@ -10,7 +10,7 @@ public class Account{
     @Id
     @Column(name = "account_id")
     private String accountId;
-    @Column(name = "full_name")
+    @Column(name = "full_name" , columnDefinition = "nvarchar(255)")
     private String fullName;
     private String password;
     private String email;
