@@ -1,6 +1,8 @@
 package vn.edu.iuh.fit.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
 @Entity(name = "log")
@@ -11,6 +13,7 @@ public class Log {
     private long logID;
     @Id
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Account account;
     @Column(name = "login_time")
     private Date logInTime;

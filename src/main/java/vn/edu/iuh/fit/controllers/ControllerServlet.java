@@ -1,9 +1,7 @@
 package vn.edu.iuh.fit.controllers;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
+
 import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,7 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.websocket.Session;
+import vn.edu.iuh.fit.conectionDB.ConecttionDB;
 import vn.edu.iuh.fit.entities.Account;
 import vn.edu.iuh.fit.entities.GantAccess;
 import vn.edu.iuh.fit.entities.Log;
@@ -21,96 +19,176 @@ import vn.edu.iuh.fit.reponsitory.LogReponsitory;
 import vn.edu.iuh.fit.reponsitory.RoleReponsitory;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Date;
 
-@WebServlet( urlPatterns = {"/controller","/control"})
+@WebServlet(urlPatterns = {"/controller", "/control"})
 public class ControllerServlet extends HttpServlet {
+    private final AccountReponsitory accountReponsitory = new AccountReponsitory();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=UTF-8");
+
         String check = req.getParameter("submit");
-        String logout =req.getParameter("logout");
+        String logout = req.getParameter("logout");
         String add = req.getParameter("add");
-        String email = req.getParameter("email")+"";
-        String password = req.getParameter("password")+"";
-        AccountReponsitory accountReponsitory = new AccountReponsitory();
-        if (check!=null){
-            if (!email.equalsIgnoreCase("") && !password.equalsIgnoreCase("")){
-                Account user01 = accountReponsitory.getAccountByEmailAndPassword(email,password);
-                System.out.println(user01);
-                if (user01 != null){
-                    Log log = new Log(user01,new Date(),null,user01.getFullName());
-                    HttpSession session = req.getSession();
-                    session.setAttribute("log",log);
-                    session.setAttribute("user",user01);
+        String delete = req.getParameter("delete");
+        String addTV = req.getParameter("addTV");
+        String edit = req.getParameter("EditTV");
 
-                    if (!checkAdmin(user01)){
-                        RoleReponsitory roleReponsitory = new RoleReponsitory();
-                        req.setAttribute("list_gant",roleReponsitory.getRole(user01.getAccountId()));
-                        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/user.jsp");
-                        dispatcher.forward(req,resp);
-                    }else {
+        if (check != null) {
+            handleLogin(req, resp);
+        } else if (logout != null) {
+            handleLogout(req, resp);
+        } else if (add != null) {
+          handleAddQuyen(req, resp,add);
+        } else if (delete != null) {
+           handleDelete(req,resp,delete);
 
-                        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin.jsp");
-                        dispatcher.forward(req,resp);
-                    }
-                }else {
-                    req.setAttribute("noti","Tài khoản mật khẩu không chính xác!");
-                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
-                    dispatcher.forward(req,resp);
-                }
-            }else {
-                req.setAttribute("noti","Tài khoản mật khẩu không bỏ trống");
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
-                dispatcher.forward(req,resp);
-            }
-        } else if (logout!=null) {
-            Log log = (Log) req.getSession().getAttribute("log");
-            
-            log.setLogOutTime(new Date());
-            LogReponsitory logReponsitory = new LogReponsitory();
-            logReponsitory.readLog(log);
-            req.getSession().removeAttribute("log");
-            req.getSession().removeAttribute("user");
-            req.removeAttribute("list_gant");
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
-            dispatcher.forward(req,resp);
-
-        } else if (add !=null) {
-            String role = req.getParameter("role");
-            String user = req.getParameter("user");
-            String notes = req.getParameter("note");
-
-            Account account = accountReponsitory.getOne(user);
+        } else if (addTV != null) {
+           handleAddAccount(req,resp,addTV);
+        } else if (edit != null) {
+            String NOTI ="";
+            String id = edit.split(",")[0];
+            String name = edit.split(",")[1];
+            String email = edit.split(",")[2];
+            String sdt = edit.split(",")[3];
+            String pass = edit.split(",")[4];
+            boolean isStatus = Boolean.parseBoolean(edit.split(",")[5]);
+            Account account = new Account(id,name,pass,email,sdt,isStatus);
             System.out.println(account);
-            Role role1 = new RoleReponsitory().getOne(role);
-            System.out.println(role1);
-
-            GantAccess gantAccess = new GantAccess(role1,account,true,notes);
-
-            if (accountReponsitory.addGantAccess(gantAccess)) {
-                req.setAttribute("notifi", "Thêm Thành Công");
-            } else {
-                req.setAttribute("notifi", "Thêm Thất Bại");
+            if (accountReponsitory.updateAccount(account)){
+                NOTI = "Cập Nhật Thông Tin Thành Công";
+            }else {
+                NOTI ="Cập Nhật Thông Tin Thất Bại!";
             }
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin.jsp");
-            dispatcher.forward(req,resp);
+            req.setAttribute("thongbao", NOTI);
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin2.jsp");
+            dispatcher.forward(req, resp);
 
         }
     }
-    public boolean checkAdmin(Account account){
+    public String createAccountID(){
+        String id =accountReponsitory.getAccountFinal();
+        int num = Integer.parseInt(id.substring(4));
+        num++;
+        return "user"+num;
+    }
+    public boolean checkAdmin(Account account) {
         RoleReponsitory roleReponsitory = new RoleReponsitory();
-        for (Role role: roleReponsitory.getRole(account.getAccountId())) {
+        for (Role role : roleReponsitory.getRole(account.getAccountId())) {
             if (role.getRoleName().equalsIgnoreCase("admin")) {
                 System.out.println(role.getRoleName());
                 return true;
             }
         }
         return false;
+    }
+
+    public void handleDelete(HttpServletRequest req, HttpServletResponse resp,String delete) throws ServletException, IOException {
+        String NOTI ="";
+        Account account = accountReponsitory.getAll().get(Integer.parseInt(delete) - 1);
+        System.out.println(account);
+        if (accountReponsitory.deleteAccount(account)){
+            NOTI = "Đã Xoá Thành Công";
+        }else {
+            NOTI ="Xoá Thành Viên Thất Bại!";
+        }
+        req.setAttribute("thongbao", NOTI);
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin2.jsp");
+        dispatcher.forward(req, resp);
+    }
+    public void handleAddAccount(HttpServletRequest req, HttpServletResponse resp,String addTV) throws ServletException, IOException {
+
+        String[] addTVArr = addTV.split(",");
+        String nameAdd = addTVArr[0];
+        String emailAdd = addTVArr[1];
+        String sdtAdd = addTVArr[2];
+        Account account = new Account(createAccountID(),nameAdd,"4444",emailAdd,sdtAdd,true);
+        String NOTI = "";
+        if (nameAdd.isEmpty() || emailAdd.isEmpty() || sdtAdd.isEmpty()) {
+            NOTI ="Thông Tin không Được Bỏ Trống!";
+        }else {
+            if (accountReponsitory.insertAccount(account)){
+                NOTI ="Thêm Thành Viên Mới Thành Công.";
+            }else {
+                NOTI ="Thêm Thành Viên Mới Thất Bại.";
+            }
+        }
+        req.setAttribute("thongbao", NOTI);
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin2.jsp");
+        dispatcher.forward(req, resp);
+    }
+    public void handleLogout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Log log = (Log) req.getSession().getAttribute("log");
+
+        log.setLogOutTime(new Date());
+        LogReponsitory logReponsitory = new LogReponsitory();
+        logReponsitory.readLog(log);
+        req.getSession().removeAttribute("log");
+        req.getSession().removeAttribute("user");
+        req.removeAttribute("list_gant");
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
+        dispatcher.forward(req, resp);
+    }
+
+    public void handleAddQuyen(HttpServletRequest req, HttpServletResponse resp ,String add) throws ServletException, IOException {
+        String NOTI="";
+        RoleReponsitory roleReponsitory = new RoleReponsitory();
+        String userID = add.split(",")[0];
+        String roleID = add.split(",")[1];
+        String note = add.split(",")[2];
+        Role role = roleReponsitory.getOne(roleID);
+        Account account = accountReponsitory.getOne(userID);
+        if (accountReponsitory.addGantAccess(new GantAccess(role,account,true,note))){
+            NOTI ="Cấp Quyền Thành Công.";
+        }else {
+            NOTI ="Cấp quyền Không Thành Công!";
+        }
+        req.setAttribute("thongbao", NOTI);
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin2.jsp");
+        dispatcher.forward(req, resp);
+    }
+
+    public void handleLogin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        String email = req.getParameter("email");
+        String password = req.getParameter("password");
+        if (email != null && password != null) {
+            Account user01 = accountReponsitory.getAccountByEmailAndPassword(email, password);
+            System.out.println(user01);
+            if (user01 != null) {
+                Log log = new Log(user01, new Date(), null, user01.getFullName());
+                HttpSession session = req.getSession();
+                session.setAttribute("log", log);
+                session.setAttribute("user", user01);
+
+                if (!checkAdmin(user01)) {
+                    RoleReponsitory roleReponsitory = new RoleReponsitory();
+                    req.setAttribute("list_gant", roleReponsitory.getRole(user01.getAccountId()));
+                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/user.jsp");
+                    dispatcher.forward(req, resp);
+                } else {
+                    req.setAttribute("thongbao", null);
+                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin2.jsp");
+                    dispatcher.forward(req, resp);
+                }
+            } else {
+                req.setAttribute("noti", "Tài khoản mật khẩu không chính xác!");
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
+                dispatcher.forward(req, resp);
+            }
+        } else {
+            req.setAttribute("noti", "Tài khoản mật khẩu không bỏ trống");
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
+            dispatcher.forward(req, resp);
+        }
     }
 }

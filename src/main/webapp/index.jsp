@@ -27,12 +27,11 @@
         <h1>Sign In</h1>
         <div class="form-group w-50 " >
             <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <input value="sonpham280452002@gmail.com" type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
         </div>
         <div class="form-group w-50">
             <label for="exampleInputPassword1" >Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password">
+            <input value="sonpham123" type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password">
         </div>
 
             <%
@@ -41,7 +40,7 @@
             <div> <%=noti%></div>
             <%}%>
 
-        <button  type="submit" class="mt-2 btn btn-primary" name="submit" value="form02">Submit</button>
+        <button type="submit" class="mt-2 btn btn-primary" name="submit" value="form02">Submit</button>
     </form>
 </div>
 </body>

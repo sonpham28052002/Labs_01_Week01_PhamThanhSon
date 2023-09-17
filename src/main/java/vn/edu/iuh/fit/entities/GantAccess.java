@@ -1,6 +1,8 @@
 package vn.edu.iuh.fit.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "grant_access")
@@ -8,10 +10,12 @@ public class GantAccess {
     @Id
     @ManyToOne
     @JoinColumn(name = "role_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Role role;
     @Id
     @ManyToOne
     @JoinColumn(name = "account_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private  Account account;
     @Column(name = "is_gant")
     private boolean isGant;

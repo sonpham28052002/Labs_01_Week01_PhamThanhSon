@@ -58,12 +58,7 @@ public class Role {
 
     @Override
     public String toString() {
-        return "Role{" +
-                "roleId='" + roleId + '\'' +
-                ", roleName='" + roleName + '\'' +
-                ", description='" + description + '\'' +
-                ", status=" + status +
-                '}';
+        return "{'roleId':'"+roleId+"','roleName':'"+roleName+"','description':'"+description+"','status':'"+status+"'}";
     }
 
     public static void main(String[] args) {

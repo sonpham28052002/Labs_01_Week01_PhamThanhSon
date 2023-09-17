@@ -2,7 +2,6 @@ package vn.edu.iuh.fit.reponsitory;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Query;
 import vn.edu.iuh.fit.conectionDB.ConecttionDB;
 import vn.edu.iuh.fit.entities.Account;
 import vn.edu.iuh.fit.entities.GantAccess;
@@ -35,7 +34,7 @@ public class AccountReponsitory {
     }
 
     public List<Account> getAll(){
-        return entityManager.createQuery("select a from Account a", Account.class).getResultList();
+        return entityManager.createQuery("select a from Account a where status = +"+1, Account.class).getResultList();
     }
     public boolean addGantAccess(GantAccess gantAccess){
         EntityTransaction transaction = entityManager.getTransaction();
@@ -46,6 +45,49 @@ public class AccountReponsitory {
             return true;
         }catch (Exception ex){
             transaction.rollback();
+        }
+        return false;
+    }
+    public String getAccountFinal(){
+        return entityManager.createQuery("select ac from Account ac order by ac.accountId desc ",Account.class).getResultList().get(0).getAccountId();
+    }
+    public boolean insertAccount(Account account){
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+        try {
+            entityManager.persist(account);
+            transaction.commit();
+            return true;
+        }catch (Exception ex){
+            ex.printStackTrace();
+            transaction.rollback();
+        }
+        return false;
+    }
+    public boolean deleteAccount(Account account){
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+        try {
+            entityManager.remove(account);
+            transaction.commit();
+            return true;
+        }
+        catch (Exception exception){
+            exception.printStackTrace();
+            transaction.rollback();
+        }
+        return false;
+    }
+    public boolean updateAccount(Account account){
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+        try {
+            entityManager.merge(account);
+            transaction.commit();
+            return true;
+        }catch (Exception exception){
+            exception.printStackTrace();
+             transaction.rollback();
         }
         return false;
     }

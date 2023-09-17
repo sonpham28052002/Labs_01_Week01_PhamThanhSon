@@ -41,4 +41,20 @@ public class RoleReponsitory {
     public List<Role> getAll(){
         return entityManager.createQuery("select rl from role rl",Role.class).getResultList();
     }
+
+    public List<Role> getRoleNoBelongAccount(String id){
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+        try {
+            String sql = "SELECT * from role WHERE role_id not in (SELECT role_id FROM grant_access WHERE account_id = '"+id+"')";
+            List<Role> ds = entityManager.createNativeQuery(sql,Role.class).getResultList();
+            transaction.commit();
+            return ds;
+        }catch (Exception ex){
+            ex.printStackTrace();
+            transaction.rollback();
+        }
+
+        return null;
+    }
 }

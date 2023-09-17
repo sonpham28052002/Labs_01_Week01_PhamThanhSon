@@ -79,14 +79,8 @@ public class Account{
 
     @Override
     public String toString() {
-        return "Account{" +
-                "accountId='" + accountId + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", status=" + status +
-                '}';
+//        "{'roleId':'"+roleId+"','roleName':'"+roleName+"','description':'"+description+"','status':'"+status+"'}";
+        return "{'accountId':'" + accountId +"','fullName':'" + fullName + "', 'password':'" + password + "','email':'" + email + "','phone':'" + phone + "', 'status':'" + status +"'}";
     }
 
     @OneToMany(mappedBy = "account")
