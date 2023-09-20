@@ -4,16 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e4e70969-f8be-4ec3-8e2c-29f1586c5121" name="Changes" comment="update function handleEditInfo">
-      <change afterPath="$PROJECT_DIR$/ScriptSQL/mydbweek_01.sql" afterDir="false" />
+    <list default="true" id="e4e70969-f8be-4ec3-8e2c-29f1586c5121" name="Changes" comment="push project Labs_01_Week01_PhamThanhSon">
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/admin2.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/vn/edu/iuh/fit/controllers/ControllerServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vn/edu/iuh/fit/controllers/ControllerServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/vn/edu/iuh/fit/entities/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vn/edu/iuh/fit/entities/Account.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/vn/edu/iuh/fit/entities/GantAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vn/edu/iuh/fit/entities/GantAccess.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/vn/edu/iuh/fit/entities/Log.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vn/edu/iuh/fit/entities/Log.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/vn/edu/iuh/fit/entities/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vn/edu/iuh/fit/entities/Role.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/vn/edu/iuh/fit/reponsitory/AccountReponsitory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vn/edu/iuh/fit/reponsitory/AccountReponsitory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/vn/edu/iuh/fit/reponsitory/RoleReponsitory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vn/edu/iuh/fit/reponsitory/RoleReponsitory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/admin.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/index.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/user.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/user.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,21 +28,6 @@
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
-  </component>
-  <component name="ExternalProjectsManager">
-    <system id="GRADLE">
-      <state>
-        <task path="$PROJECT_DIR$">
-          <activation />
-        </task>
-        <projects_view>
-          <tree_state>
-            <expand />
-            <select />
-          </tree_state>
-        </projects_view>
-      </state>
-    </system>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -74,30 +63,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "JPA.DatabaseSchemaImportDialog": "c7b02f5f-b0a0-4005-8a50-085bc1b1ed83",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "D:/HK7_www/Labs_01_Week01_PhamThanhSon/ScriptSQL",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;JPA.DatabaseSchemaImportDialog&quot;: &quot;c7b02f5f-b0a0-4005-8a50-085bc1b1ed83&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/HK7_www/Labs_01_Week01_PhamThanhSon/src/main/java/vn/edu/iuh/fit&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql",
-      "mariadb"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;,
+      &quot;mariadb&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\HK7_www\Labs_01_Week01_PhamThanhSon\src\main\java\vn\edu\iuh\fit" />
@@ -301,15 +289,7 @@
       <workItem from="1694872007973" duration="85000" />
       <workItem from="1694885565111" duration="18308000" />
       <workItem from="1694928742777" duration="4345000" />
-      <workItem from="1694950468224" duration="26055000" />
-      <workItem from="1694979914355" duration="211000" />
-      <workItem from="1695064641831" duration="177000" />
-      <workItem from="1695104964102" duration="2023000" />
-      <workItem from="1695192148507" duration="3152000" />
-      <workItem from="1695195995885" duration="892000" />
-      <workItem from="1695196918309" duration="24000" />
-      <workItem from="1695198884117" duration="2093000" />
-      <workItem from="1695219652294" duration="4688000" />
+      <workItem from="1694950468224" duration="25926000" />
     </task>
     <task id="LOCAL-00001" summary="push project Labs_01_Week01_PhamThanhSon">
       <option name="closed" value="true" />
@@ -319,23 +299,7 @@
       <option name="project" value="LOCAL" />
       <updated>1694632919657</updated>
     </task>
-    <task id="LOCAL-00002" summary="upgrade project">
-      <option name="closed" value="true" />
-      <created>1694979840675</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1694979840675</updated>
-    </task>
-    <task id="LOCAL-00003" summary="update function handleEditInfo">
-      <option name="closed" value="true" />
-      <created>1694980107244</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1694980107245</updated>
-    </task>
-    <option name="localTasksCounter" value="4" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -355,8 +319,6 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="push project Labs_01_Week01_PhamThanhSon" />
-    <MESSAGE value="upgrade project" />
-    <MESSAGE value="update function handleEditInfo" />
-    <option name="LAST_COMMIT_MESSAGE" value="update function handleEditInfo" />
+    <option name="LAST_COMMIT_MESSAGE" value="push project Labs_01_Week01_PhamThanhSon" />
   </component>
 </project>

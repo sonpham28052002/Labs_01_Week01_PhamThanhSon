@@ -48,45 +48,39 @@ public class ControllerServlet extends HttpServlet {
         } else if (logout != null) {
             handleLogout(req, resp);
         } else if (add != null) {
-            handleAddQuyen(req, resp, add);
+          handleAddQuyen(req, resp,add);
         } else if (delete != null) {
-            handleDelete(req, resp, delete);
+           handleDelete(req,resp,delete);
 
         } else if (addTV != null) {
-            handleAddAccount(req, resp, addTV);
+           handleAddAccount(req,resp,addTV);
         } else if (edit != null) {
-            handleDelete(req, resp, edit);
+            String NOTI ="";
+            String id = edit.split(",")[0];
+            String name = edit.split(",")[1];
+            String email = edit.split(",")[2];
+            String sdt = edit.split(",")[3];
+            String pass = edit.split(",")[4];
+            boolean isStatus = Boolean.parseBoolean(edit.split(",")[5]);
+            Account account = new Account(id,name,pass,email,sdt,isStatus);
+            System.out.println(account);
+            if (accountReponsitory.updateAccount(account)){
+                NOTI = "Cập Nhật Thông Tin Thành Công";
+            }else {
+                NOTI ="Cập Nhật Thông Tin Thất Bại!";
+            }
+            req.setAttribute("thongbao", NOTI);
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin2.jsp");
+            dispatcher.forward(req, resp);
 
         }
     }
-
-    public void handleEditInfo(HttpServletRequest req, HttpServletResponse resp, String edit) throws ServletException, IOException {
-        String NOTI = "";
-        String id = edit.split(",")[0];
-        String name = edit.split(",")[1];
-        String email = edit.split(",")[2];
-        String sdt = edit.split(",")[3];
-        String pass = edit.split(",")[4];
-        boolean isStatus = Boolean.parseBoolean(edit.split(",")[5]);
-        Account account = new Account(id, name, pass, email, sdt, isStatus);
-        System.out.println(account);
-        if (accountReponsitory.updateAccount(account)) {
-            NOTI = "Cập Nhật Thông Tin Thành Công";
-        } else {
-            NOTI = "Cập Nhật Thông Tin Thất Bại!";
-        }
-        req.setAttribute("thongbao", NOTI);
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin2.jsp");
-        dispatcher.forward(req, resp);
-    }
-
-    public String createAccountID() {
-        String id = accountReponsitory.getAccountFinal();
+    public String createAccountID(){
+        String id =accountReponsitory.getAccountFinal();
         int num = Integer.parseInt(id.substring(4));
         num++;
-        return "user" + num;
+        return "user"+num;
     }
-
     public boolean checkAdmin(Account account) {
         RoleReponsitory roleReponsitory = new RoleReponsitory();
         for (Role role : roleReponsitory.getRole(account.getAccountId())) {
@@ -98,42 +92,40 @@ public class ControllerServlet extends HttpServlet {
         return false;
     }
 
-    public void handleDelete(HttpServletRequest req, HttpServletResponse resp, String delete) throws ServletException, IOException {
-        String NOTI = "";
+    public void handleDelete(HttpServletRequest req, HttpServletResponse resp,String delete) throws ServletException, IOException {
+        String NOTI ="";
         Account account = accountReponsitory.getAll().get(Integer.parseInt(delete) - 1);
         System.out.println(account);
-        if (accountReponsitory.deleteAccount(account)) {
+        if (accountReponsitory.deleteAccount(account)){
             NOTI = "Đã Xoá Thành Công";
-        } else {
-            NOTI = "Xoá Thành Viên Thất Bại!";
+        }else {
+            NOTI ="Xoá Thành Viên Thất Bại!";
         }
         req.setAttribute("thongbao", NOTI);
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin2.jsp");
         dispatcher.forward(req, resp);
     }
-
-    public void handleAddAccount(HttpServletRequest req, HttpServletResponse resp, String addTV) throws ServletException, IOException {
+    public void handleAddAccount(HttpServletRequest req, HttpServletResponse resp,String addTV) throws ServletException, IOException {
 
         String[] addTVArr = addTV.split(",");
         String nameAdd = addTVArr[0];
         String emailAdd = addTVArr[1];
         String sdtAdd = addTVArr[2];
-        Account account = new Account(createAccountID(), nameAdd, "4444", emailAdd, sdtAdd, true);
+        Account account = new Account(createAccountID(),nameAdd,"4444",emailAdd,sdtAdd,true);
         String NOTI = "";
         if (nameAdd.isEmpty() || emailAdd.isEmpty() || sdtAdd.isEmpty()) {
-            NOTI = "Thông Tin không Được Bỏ Trống!";
-        } else {
-            if (accountReponsitory.insertAccount(account)) {
-                NOTI = "Thêm Thành Viên Mới Thành Công.";
-            } else {
-                NOTI = "Thêm Thành Viên Mới Thất Bại.";
+            NOTI ="Thông Tin không Được Bỏ Trống!";
+        }else {
+            if (accountReponsitory.insertAccount(account)){
+                NOTI ="Thêm Thành Viên Mới Thành Công.";
+            }else {
+                NOTI ="Thêm Thành Viên Mới Thất Bại.";
             }
         }
         req.setAttribute("thongbao", NOTI);
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin2.jsp");
         dispatcher.forward(req, resp);
     }
-
     public void handleLogout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Log log = (Log) req.getSession().getAttribute("log");
 
@@ -147,18 +139,18 @@ public class ControllerServlet extends HttpServlet {
         dispatcher.forward(req, resp);
     }
 
-    public void handleAddQuyen(HttpServletRequest req, HttpServletResponse resp, String add) throws ServletException, IOException {
-        String NOTI = "";
+    public void handleAddQuyen(HttpServletRequest req, HttpServletResponse resp ,String add) throws ServletException, IOException {
+        String NOTI="";
         RoleReponsitory roleReponsitory = new RoleReponsitory();
         String userID = add.split(",")[0];
         String roleID = add.split(",")[1];
         String note = add.split(",")[2];
         Role role = roleReponsitory.getOne(roleID);
         Account account = accountReponsitory.getOne(userID);
-        if (accountReponsitory.addGantAccess(new GantAccess(role, account, true, note))) {
-            NOTI = "Cấp Quyền Thành Công.";
-        } else {
-            NOTI = "Cấp quyền Không Thành Công!";
+        if (accountReponsitory.addGantAccess(new GantAccess(role,account,true,note))){
+            NOTI ="Cấp Quyền Thành Công.";
+        }else {
+            NOTI ="Cấp quyền Không Thành Công!";
         }
         req.setAttribute("thongbao", NOTI);
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin2.jsp");
@@ -167,10 +159,10 @@ public class ControllerServlet extends HttpServlet {
 
     public void handleLogin(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String email = req.getParameter("email") + "";
-        String password = req.getParameter("password") + "";
-        if (!email.equals("") && !password.equals("")) {
-            Account user01 = accountReponsitory.getAccountByEmailAndPassword(email + "", password + "");
+        String email = req.getParameter("email");
+        String password = req.getParameter("password");
+        if (email != null && password != null) {
+            Account user01 = accountReponsitory.getAccountByEmailAndPassword(email, password);
             System.out.println(user01);
             if (user01 != null) {
                 Log log = new Log(user01, new Date(), null, user01.getFullName());
