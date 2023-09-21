@@ -27,7 +27,7 @@
         <h1>Sign In</h1>
         <div class="form-group w-50 " >
             <label for="exampleInputEmail1">Email address</label>
-            <input value="sonpham280452002@gmail.com" type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+            <input value="sonpham28052002@gmail.com" type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
         </div>
         <div class="form-group w-50">
             <label for="exampleInputPassword1" >Password</label>

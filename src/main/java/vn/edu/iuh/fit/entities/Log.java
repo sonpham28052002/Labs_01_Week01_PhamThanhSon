@@ -5,16 +5,16 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
-
 @Entity(name = "log")
 public class Log {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long logID;
 
     @Id
     @ManyToOne
+    @JoinColumn(name = "account_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Account account;
     @Column(name = "login_time")
