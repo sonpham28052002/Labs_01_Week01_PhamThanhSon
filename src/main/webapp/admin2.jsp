@@ -67,11 +67,10 @@
         }
 
 
-
         function handleClick(value, acc) {
             let option = ""
             for (let x of value) {
-                if (x.roleName !== "admin"){
+                if (x.roleName !== "admin") {
                     option += "<option value='" + x.roleId + "'>" + x.roleName + "</option>"
                 }
             }
@@ -83,10 +82,11 @@
             var arr = []
             arr.push(document.getElementById("userRole").value)
             arr.push(document.getElementById("selectRole").value)
-            arr.push(document.getElementById("note").value+"")
+            arr.push(document.getElementById("note").value + "")
 
             document.getElementById("add").value = arr;
         }
+
         function setValueFormEdit(acc) {
 
             console.log(acc)
@@ -98,6 +98,7 @@
             document.getElementById("sdt_Edit").value = acc.phone;
             document.getElementById("is_Status").checked = acc.status
         }
+
         function getValueEditTV() {
             var arr = []
             arr.push(document.getElementById("id_edit").value)
@@ -105,38 +106,41 @@
             arr.push(document.getElementById("email_Edit").value)
             arr.push(document.getElementById("pass_Edit").value)
             arr.push(document.getElementById("sdt_Edit").value)
-            arr.push(document.getElementById("is_Status").checked )
+            arr.push(document.getElementById("is_Status").checked)
 
             console.log(arr)
             alert(arr)
             document.getElementById("EditTVNew").value = arr;
 
         }
-        function setValueFormEditRoleUser(role,id){
+
+        function setValueFormEditRoleUser(role, id) {
             console.log(role)
             console.log(id)
-            var arr=""
+            var arr = ""
             for (let x of role) {
-                if (x.roleName !== "admin"){
-                    arr += "<input type='checkbox' class='form-check-input role' value='"+x.roleId+"'>" +
-                        "<label class='form-check-label mx-3' for='is_Status' >"+x.roleName+"</label><br>"
+                if (x.roleName !== "admin") {
+                    arr += "<input type='checkbox' class='form-check-input role' value='" + x.roleId + "'>" +
+                        "<label class='form-check-label mx-3' for='is_Status' >" + x.roleName + "</label><br>"
                 }
             }
             document.getElementById("formEditRole").innerHTML = arr;
         }
-        function getValueDeleteRole(){
-            var option =[]
+
+        function getValueDeleteRole() {
+            var option = []
             for (let x of document.getElementsByClassName("role")) {
                 console.log(x.checked)
-                if (x.checked){
+                if (x.checked) {
                     option.push(x.value)
                 }
             }
             option.push(document.querySelector(".delete").id)
             document.getElementById("deleteRoleUser").value = option
         }
-        function getValueAddRole(){
-            var arr =[]
+
+        function getValueAddRole() {
+            var arr = []
             arr.push(document.getElementById("name_addRole").value)
             arr.push(document.getElementById("description_addRole").value)
             arr.push(document.getElementById("is_Status_addRole").checked)
@@ -147,13 +151,41 @@
 </head>
 <body>
 <%
+    Account account1 = (Account) request.getSession().getAttribute("user");
+    List<Role> roleList1 = (List<Role>) request.getAttribute("list_gant");
     AccountReponsitory accountReponsitory = new AccountReponsitory();
     List<Account> accountList = accountReponsitory.getAll();
     String thongbao = request.getAttribute("thongbao") + "";
-    boolean check = thongbao.equals("Thêm Thành Viên Mới Thành Công.") || thongbao.equals("Đã Xoá Thành Công") || thongbao.equals("Cấp Quyền Thành Công.")|| thongbao.equals("Thêm Quyền Thành công")||thongbao.equals("Cập Nhật Thông Tin Thành Công")||thongbao.equals("Xoá quyền thành công");
+    boolean check = thongbao.equals("Thêm Thành Viên Mới Thành Công.") || thongbao.equals("Đã Xoá Thành Công") || thongbao.equals("Cấp Quyền Thành Công.") || thongbao.equals("Thêm Quyền Thành công") || thongbao.equals("Cập Nhật Thông Tin Thành Công") || thongbao.equals("Xoá quyền thành công");
 %>
 
 <div class="containers" style="align-items: center;">
+    <div class="containers" style="justify-content: center;align-items: center;margin-top: 0">
+        <h1 style="text-align: center;">Thông Tin Người Dùng</h1>
+        <div style="margin-left: 20px">
+            <p>
+                <span style="font-weight: bold">Họ Tên:</span>
+                <span><%=account1.getFullName()%></span>
+            </p>
+            <p>
+                <span style="font-weight: bold">Email:</span>
+                <span><%=account1.getEmail()%></span>
+            </p>
+            <p>
+                <span style="font-weight: bold">SĐT:</span>
+                <span><%=account1.getPhone()%></span>
+            </p>
+            <p>
+                <span>Quyền:</span>
+                <ul>
+                    <%for (Role role : roleList1) {%>
+                    <li><%=role.getRoleName()%></li>
+                    <%}%>
+                </ul>
+            </p>
+
+        </div>
+    </div>
     <h2 style="text-align: center; font-weight: bold;">
         Danh sách thành viên
     </h2>
@@ -164,7 +196,8 @@
             <input type="submit" name="logout" class="submit" style=" width: 200px; text-align: center;"
                    value="Đăng xuất"/>
         </form>
-        <button class="submit" style=" width: 200px; margin-right:0" data-toggle="modal" data-target="#addRole" >Thêm Quền mới
+        <button class="submit" style=" width: 200px; margin-right:0" data-toggle="modal" data-target="#addRole">Thêm
+            Quền mới
         </button>
     </div>
     <div style="display: flex; flex-direction: row; justify-content: center;">
@@ -177,7 +210,7 @@
         <%
             int index = 0;
             for (Account account : accountList) {
-                if (new RoleReponsitory().checkAdmin(account.getAccountId())){
+                if (new RoleReponsitory().checkAdmin(account.getAccountId())) {
                     continue;
                 }
         %>
@@ -212,15 +245,18 @@
                            id="<%=account.getAccountId()%>"
                            onclick="handleClick(<%=new RoleReponsitory().getRoleNoBelongAccount(account.getAccountId())%>,id)">
                     <button type="button" data-target="#EditTV"
-                            data-toggle="modal" class="submit "  style="margin-top: 10px;"
-                            onclick="setValueFormEdit(<%=account+""%>)">Sửa</button>
+                            data-toggle="modal" class="submit " style="margin-top: 10px;"
+                            onclick="setValueFormEdit(<%=account+""%>)">Sửa
+                    </button>
                     <button value="<%=index%>" type="submit" class="submit" name="delete"
                             style="margin-top: 10px;margin-bottom: 10px;background-color: red;border-color: red">Xoá
                     </button>
                     <button type="button" data-target="#EditRole"
                             id="<%=account.getAccountId()%>"
-                            data-toggle="modal" class="submit delete"  style="margin-bottom: 10px;"
-                            onclick="setValueFormEditRoleUser(<%=new RoleReponsitory().getRoleofAccount(account.getAccountId())%>,id)">Sửa Quyền</button>
+                            data-toggle="modal" class="submit delete" style="margin-bottom: 10px;"
+                            onclick="setValueFormEditRoleUser(<%=new RoleReponsitory().getRoleofAccount(account.getAccountId())%>,id)">
+                        Sửa Quyền
+                    </button>
                 </form>
             </div>
         </div>
@@ -335,7 +371,8 @@
                 <div class="modal-footer">
                     <form action="controller" method="post">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" id="deleteRoleUser" value="" name="deleteRoleUser" onclick="getValueDeleteRole()"
+                        <button type="submit" id="deleteRoleUser" value="" name="deleteRoleUser"
+                                onclick="getValueDeleteRole()"
                                 class="btn btn-default">Xoá Quyền
                         </button>
                     </form>

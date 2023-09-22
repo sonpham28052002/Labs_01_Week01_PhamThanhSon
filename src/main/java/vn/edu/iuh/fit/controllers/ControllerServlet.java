@@ -211,10 +211,10 @@ public class ControllerServlet extends HttpServlet {
                 HttpSession session = req.getSession();
                 session.setAttribute("log", log);
                 session.setAttribute("user", user01);
+                RoleReponsitory roleReponsitory = new RoleReponsitory();
+                req.setAttribute("list_gant", roleReponsitory.getRole(user01.getAccountId()));
 
                 if (!checkAdmin(user01)) {
-                    RoleReponsitory roleReponsitory = new RoleReponsitory();
-                    req.setAttribute("list_gant", roleReponsitory.getRole(user01.getAccountId()));
                     RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/user.jsp");
                     dispatcher.forward(req, resp);
                 } else {
