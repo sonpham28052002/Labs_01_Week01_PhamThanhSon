@@ -45,23 +45,26 @@ public class ControllerServlet extends HttpServlet {
         String deleteRoleUser = req.getParameter("deleteRoleUser");
         String btn_addRole = req.getParameter("btn_addRole");
 
-
         if (check != null) {
             handleLogin(req, resp);
         } else if (logout != null) {
             handleLogout(req, resp);
         } else if (add != null) {
             handleAddQuyen(req, resp, add);
-        } else if (delete != null) {
+        }
+        else if (delete != null) {
             handleDelete(req, resp, delete);
-
-        } else if (addTV != null) {
+        }
+        else if (addTV != null) {
             handleAddAccount(req, resp, addTV);
-        } else if (edit != null) {
+        }
+        else if (edit != null) {
             handleEditInfo(req, resp, edit);
-        } else if (deleteRoleUser != null) {
+        }
+        else if (deleteRoleUser != null) {
             handleDeleteRoleUser(req, resp, deleteRoleUser);
-        } else if (btn_addRole != null) {
+        }
+        else if (btn_addRole != null) {
             handleAddRoleNew(req, resp, btn_addRole);
         }
     }
@@ -74,6 +77,9 @@ public class ControllerServlet extends HttpServlet {
         } else {
             NOTI = "Thêm Quyền Thất Bại!";
         }
+        RoleReponsitory roleReponsitory = new RoleReponsitory();
+        Account user01 = (Account) req.getSession().getAttribute("user");
+        req.setAttribute("list_gant", roleReponsitory.getRole(user01.getAccountId()));
         req.setAttribute("thongbao", NOTI);
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin2.jsp");
         dispatcher.forward(req, resp);
@@ -93,6 +99,8 @@ public class ControllerServlet extends HttpServlet {
         } else {
             NOTI += "=> Xoá Không Thành Công";
         }
+        Account user01 = (Account) req.getSession().getAttribute("user");
+        req.setAttribute("list_gant", roleReponsitory.getRole(user01.getAccountId()));
         req.setAttribute("thongbao", NOTI);
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin2.jsp");
         dispatcher.forward(req, resp);
@@ -112,6 +120,9 @@ public class ControllerServlet extends HttpServlet {
         } else {
             NOTI = "Cập Nhật Thông Tin Thất Bại!";
         }
+        RoleReponsitory roleReponsitory = new RoleReponsitory();
+        Account user01 = (Account) req.getSession().getAttribute("user");
+        req.setAttribute("list_gant", roleReponsitory.getRole(user01.getAccountId()));
         req.setAttribute("thongbao", NOTI);
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin2.jsp");
         dispatcher.forward(req, resp);
@@ -142,6 +153,9 @@ public class ControllerServlet extends HttpServlet {
         } else {
             NOTI = "Xoá Thành Viên Thất Bại!";
         }
+        RoleReponsitory roleReponsitory = new RoleReponsitory();
+        Account user01 = (Account) req.getSession().getAttribute("user");
+        req.setAttribute("list_gant", roleReponsitory.getRole(user01.getAccountId()));
         req.setAttribute("thongbao", NOTI);
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin2.jsp");
         dispatcher.forward(req, resp);
@@ -164,6 +178,9 @@ public class ControllerServlet extends HttpServlet {
                 NOTI = "Thêm Thành Viên Mới Thất Bại.";
             }
         }
+        RoleReponsitory roleReponsitory = new RoleReponsitory();
+        Account user01 = (Account) req.getSession().getAttribute("user");
+        req.setAttribute("list_gant", roleReponsitory.getRole(user01.getAccountId()));
         req.setAttribute("thongbao", NOTI);
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin2.jsp");
         dispatcher.forward(req, resp);
@@ -184,6 +201,7 @@ public class ControllerServlet extends HttpServlet {
 
     public void handleAddQuyen(HttpServletRequest req, HttpServletResponse resp, String add) throws ServletException, IOException {
         String NOTI = "";
+        System.out.println(" add : "+add);
         RoleReponsitory roleReponsitory = new RoleReponsitory();
         String userID = add.split(",")[0];
         String roleID = add.split(",")[1];
@@ -196,6 +214,8 @@ public class ControllerServlet extends HttpServlet {
             NOTI = "Cấp quyền Không Thành Công!";
         }
         req.setAttribute("thongbao", NOTI);
+        Account user01 = (Account) req.getSession().getAttribute("user");
+        req.setAttribute("list_gant", roleReponsitory.getRole(user01.getAccountId()));
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin2.jsp");
         dispatcher.forward(req, resp);
     }

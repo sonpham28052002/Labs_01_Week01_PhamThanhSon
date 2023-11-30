@@ -82,7 +82,7 @@
             var arr = []
             arr.push(document.getElementById("userRole").value)
             arr.push(document.getElementById("selectRole").value)
-            arr.push(document.getElementById("note").value + "")
+            arr.push(document.getElementById("note").value + "note")
 
             document.getElementById("add").value = arr;
         }
@@ -196,7 +196,7 @@
             <input type="submit" name="logout" class="submit" style=" width: 200px; text-align: center;"
                    value="Đăng xuất"/>
         </form>
-        <button class="submit" style=" width: 200px; margin-right:0" data-toggle="modal" data-target="#addRole">Thêm
+        <button class="submit" style=" width: 200px; margin-right:0" data-toggle="modal" data-target="#addRoleaddRole">Thêm
             Quền mới
         </button>
     </div>

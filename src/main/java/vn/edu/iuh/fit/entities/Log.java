@@ -9,7 +9,7 @@ import java.util.Date;
 public class Log {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long logID;
 
     @Id
